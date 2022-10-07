@@ -15,44 +15,14 @@
 *  limitations under the License.
 *
 *=========================================================================*/
+#ifndef sitkNamespace_h
+#define sitkNamespace_h
 
-#ifndef sitkImageIOUtilities_h
-#define sitkImageIOUtilities_h
+#define SITK_ITK_NAMESPACE_IS_NOT_ITK
+#define SITK_ITK_NAMESPACE slicer_itk
 
-#include <string>
-#include <vector>
-#include <ostream>
-
-#include "sitkNamespace.h"
-
-namespace itk {
-
-
-// Forward declaration for pointer
-class ImageIOBase;
-
-
-template<class T>
-class SmartPointer;
-
-namespace simple {
-namespace ioutils {
-
-/* Internal method which prints all registered ImageIO names and the
- * file extensions they report as supporting.
- */
-SITKIO_HIDDEN void PrintRegisteredImageIOs(std::ostream & out);
-
-/* Internal method which creates a string list of the names of the
-* ImageIOs registered.
- */
-SITKIO_HIDDEN std::vector<std::string> GetRegisteredImageIOs();
-
-
-SITKIO_HIDDEN itk::SmartPointer<ImageIOBase> CreateImageIOByName(const std::string & ioname);
-
-}
-}
-}
-
+#if defined(SITK_ITK_NAMESPACE_IS_NOT_ITK) && !defined(itk)
+#define itk SITK_ITK_NAMESPACE
 #endif
+
+#endif //sitkNamespace_h
