@@ -18,6 +18,7 @@
 #ifndef sitkPixelIDTypes_h
 #define sitkPixelIDTypes_h
 
+#include "sitkNamespace.h"
 
 namespace itk
 {

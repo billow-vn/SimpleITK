@@ -20,6 +20,8 @@
 
 #include <type_traits>
 
+#include "sitkNamespace.h"
+
 namespace itk::simple
 {
 
