@@ -20,7 +20,7 @@
 
 #include <type_traits>
 
-#include "sitkNamespace.h"
+#include "sitkConfigure.h"
 
 namespace itk
 {
