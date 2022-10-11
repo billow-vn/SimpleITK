@@ -47,4 +47,11 @@
 #define SITK_ITK_VERSION_MINOR @ITK_VERSION_MINOR@
 #define SITK_ITK_VERSION_PATCH @ITK_VERSION_PATCH@
 
+#define SITK_ITK_NAMESPACE_IS_NOT_ITK
+#define SITK_ITK_NAMESPACE slicer_itk
+
+#if defined(SITK_ITK_NAMESPACE_IS_NOT_ITK) && !defined(itk)
+#define itk SITK_ITK_NAMESPACE
+#endif
+
 #endif // sitkConfigure_h
