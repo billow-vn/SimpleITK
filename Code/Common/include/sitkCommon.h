@@ -19,7 +19,6 @@
 #define sitkCommon_h
 
 #include "sitkMacro.h"
-#include "sitkNamespace.h"
 
 #ifndef sitkMacro_h
 #error "sitkMacro.h must be included before sitkCommon.h"

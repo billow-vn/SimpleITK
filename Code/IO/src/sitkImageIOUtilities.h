@@ -23,7 +23,7 @@
 #include <vector>
 #include <ostream>
 
-#include "sitkNamespace.h"
+#include "sitkConfigure.h"
 
 namespace itk {
 
