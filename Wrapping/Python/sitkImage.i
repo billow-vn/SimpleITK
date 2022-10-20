@@ -17,54 +17,54 @@
 *=========================================================================*/
 
 
-%rename( __GetPixelAsInt8__ ) itk::simple::Image::GetPixelAsInt8;
-%rename( __GetPixelAsUInt8__ ) itk::simple::Image::GetPixelAsUInt8;
-%rename( __GetPixelAsInt16__ ) itk::simple::Image::GetPixelAsInt16;
-%rename( __GetPixelAsUInt16__ ) itk::simple::Image::GetPixelAsUInt16;
-%rename( __GetPixelAsInt32__ ) itk::simple::Image::GetPixelAsInt32;
-%rename( __GetPixelAsUInt32__ ) itk::simple::Image::GetPixelAsUInt32;
-%rename( __GetPixelAsInt64__ ) itk::simple::Image::GetPixelAsInt64;
-%rename( __GetPixelAsUInt64__ ) itk::simple::Image::GetPixelAsUInt64;
-%rename( __GetPixelAsFloat__ ) itk::simple::Image::GetPixelAsFloat;
-%rename( __GetPixelAsDouble__ ) itk::simple::Image::GetPixelAsDouble;
-%rename( __GetPixelAsVectorInt8__ ) itk::simple::Image::GetPixelAsVectorInt8;
-%rename( __GetPixelAsVectorUInt8__ ) itk::simple::Image::GetPixelAsVectorUInt8;
-%rename( __GetPixelAsVectorInt16__ ) itk::simple::Image::GetPixelAsVectorInt16;
-%rename( __GetPixelAsVectorUInt16__ ) itk::simple::Image::GetPixelAsVectorUInt16;
-%rename( __GetPixelAsVectorInt32__ ) itk::simple::Image::GetPixelAsVectorInt32;
-%rename( __GetPixelAsVectorUInt32__ ) itk::simple::Image::GetPixelAsVectorUInt32;
-%rename( __GetPixelAsVectorInt64__ ) itk::simple::Image::GetPixelAsVectorInt64;
-%rename( __GetPixelAsVectorUInt64__ ) itk::simple::Image::GetPixelAsVectorUInt64;
-%rename( __GetPixelAsVectorFloat32__ ) itk::simple::Image::GetPixelAsVectorFloat32;
-%rename( __GetPixelAsVectorFloat64__ ) itk::simple::Image::GetPixelAsVectorFloat64;
-%rename( __GetPixelAsComplexFloat32__ ) itk::simple::Image::GetPixelAsComplexFloat32;
-%rename( __GetPixelAsComplexFloat64__ ) itk::simple::Image::GetPixelAsComplexFloat64;
+%rename( __GetPixelAsInt8__ ) slicer_itk::simple::Image::GetPixelAsInt8;
+%rename( __GetPixelAsUInt8__ ) slicer_itk::simple::Image::GetPixelAsUInt8;
+%rename( __GetPixelAsInt16__ ) slicer_itk::simple::Image::GetPixelAsInt16;
+%rename( __GetPixelAsUInt16__ ) slicer_itk::simple::Image::GetPixelAsUInt16;
+%rename( __GetPixelAsInt32__ ) slicer_itk::simple::Image::GetPixelAsInt32;
+%rename( __GetPixelAsUInt32__ ) slicer_itk::simple::Image::GetPixelAsUInt32;
+%rename( __GetPixelAsInt64__ ) slicer_itk::simple::Image::GetPixelAsInt64;
+%rename( __GetPixelAsUInt64__ ) slicer_itk::simple::Image::GetPixelAsUInt64;
+%rename( __GetPixelAsFloat__ ) slicer_itk::simple::Image::GetPixelAsFloat;
+%rename( __GetPixelAsDouble__ ) slicer_itk::simple::Image::GetPixelAsDouble;
+%rename( __GetPixelAsVectorInt8__ ) slicer_itk::simple::Image::GetPixelAsVectorInt8;
+%rename( __GetPixelAsVectorUInt8__ ) slicer_itk::simple::Image::GetPixelAsVectorUInt8;
+%rename( __GetPixelAsVectorInt16__ ) slicer_itk::simple::Image::GetPixelAsVectorInt16;
+%rename( __GetPixelAsVectorUInt16__ ) slicer_itk::simple::Image::GetPixelAsVectorUInt16;
+%rename( __GetPixelAsVectorInt32__ ) slicer_itk::simple::Image::GetPixelAsVectorInt32;
+%rename( __GetPixelAsVectorUInt32__ ) slicer_itk::simple::Image::GetPixelAsVectorUInt32;
+%rename( __GetPixelAsVectorInt64__ ) slicer_itk::simple::Image::GetPixelAsVectorInt64;
+%rename( __GetPixelAsVectorUInt64__ ) slicer_itk::simple::Image::GetPixelAsVectorUInt64;
+%rename( __GetPixelAsVectorFloat32__ ) slicer_itk::simple::Image::GetPixelAsVectorFloat32;
+%rename( __GetPixelAsVectorFloat64__ ) slicer_itk::simple::Image::GetPixelAsVectorFloat64;
+%rename( __GetPixelAsComplexFloat32__ ) slicer_itk::simple::Image::GetPixelAsComplexFloat32;
+%rename( __GetPixelAsComplexFloat64__ ) slicer_itk::simple::Image::GetPixelAsComplexFloat64;
 
-%rename( __SetPixelAsInt8__ ) itk::simple::Image::SetPixelAsInt8;
-%rename( __SetPixelAsUInt8__ ) itk::simple::Image::SetPixelAsUInt8;
-%rename( __SetPixelAsInt16__ ) itk::simple::Image::SetPixelAsInt16;
-%rename( __SetPixelAsUInt16__ ) itk::simple::Image::SetPixelAsUInt16;
-%rename( __SetPixelAsInt32__ ) itk::simple::Image::SetPixelAsInt32;
-%rename( __SetPixelAsUInt32__ ) itk::simple::Image::SetPixelAsUInt32;
-%rename( __SetPixelAsInt64__ ) itk::simple::Image::SetPixelAsInt64;
-%rename( __SetPixelAsUInt64__ ) itk::simple::Image::SetPixelAsUInt64;
-%rename( __SetPixelAsFloat__ ) itk::simple::Image::SetPixelAsFloat;
-%rename( __SetPixelAsDouble__ ) itk::simple::Image::SetPixelAsDouble;
-%rename( __SetPixelAsVectorInt8__ ) itk::simple::Image::SetPixelAsVectorInt8;
-%rename( __SetPixelAsVectorUInt8__ ) itk::simple::Image::SetPixelAsVectorUInt8;
-%rename( __SetPixelAsVectorInt16__ ) itk::simple::Image::SetPixelAsVectorInt16;
-%rename( __SetPixelAsVectorUInt16__ ) itk::simple::Image::SetPixelAsVectorUInt16;
-%rename( __SetPixelAsVectorInt32__ ) itk::simple::Image::SetPixelAsVectorInt32;
-%rename( __SetPixelAsVectorUInt32__ ) itk::simple::Image::SetPixelAsVectorUInt32;
-%rename( __SetPixelAsVectorInt64__ ) itk::simple::Image::SetPixelAsVectorInt64;
-%rename( __SetPixelAsVectorUInt64__ ) itk::simple::Image::SetPixelAsVectorUInt64;
-%rename( __SetPixelAsVectorFloat32__ ) itk::simple::Image::SetPixelAsVectorFloat32;
-%rename( __SetPixelAsVectorFloat64__ ) itk::simple::Image::SetPixelAsVectorFloat64;
-%rename( __SetPixelAsComplexFloat32__ ) itk::simple::Image::SetPixelAsComplexFloat32;
-%rename( __SetPixelAsComplexFloat64__ ) itk::simple::Image::SetPixelAsComplextFloat64;
+%rename( __SetPixelAsInt8__ ) slicer_itk::simple::Image::SetPixelAsInt8;
+%rename( __SetPixelAsUInt8__ ) slicer_itk::simple::Image::SetPixelAsUInt8;
+%rename( __SetPixelAsInt16__ ) slicer_itk::simple::Image::SetPixelAsInt16;
+%rename( __SetPixelAsUInt16__ ) slicer_itk::simple::Image::SetPixelAsUInt16;
+%rename( __SetPixelAsInt32__ ) slicer_itk::simple::Image::SetPixelAsInt32;
+%rename( __SetPixelAsUInt32__ ) slicer_itk::simple::Image::SetPixelAsUInt32;
+%rename( __SetPixelAsInt64__ ) slicer_itk::simple::Image::SetPixelAsInt64;
+%rename( __SetPixelAsUInt64__ ) slicer_itk::simple::Image::SetPixelAsUInt64;
+%rename( __SetPixelAsFloat__ ) slicer_itk::simple::Image::SetPixelAsFloat;
+%rename( __SetPixelAsDouble__ ) slicer_itk::simple::Image::SetPixelAsDouble;
+%rename( __SetPixelAsVectorInt8__ ) slicer_itk::simple::Image::SetPixelAsVectorInt8;
+%rename( __SetPixelAsVectorUInt8__ ) slicer_itk::simple::Image::SetPixelAsVectorUInt8;
+%rename( __SetPixelAsVectorInt16__ ) slicer_itk::simple::Image::SetPixelAsVectorInt16;
+%rename( __SetPixelAsVectorUInt16__ ) slicer_itk::simple::Image::SetPixelAsVectorUInt16;
+%rename( __SetPixelAsVectorInt32__ ) slicer_itk::simple::Image::SetPixelAsVectorInt32;
+%rename( __SetPixelAsVectorUInt32__ ) slicer_itk::simple::Image::SetPixelAsVectorUInt32;
+%rename( __SetPixelAsVectorInt64__ ) slicer_itk::simple::Image::SetPixelAsVectorInt64;
+%rename( __SetPixelAsVectorUInt64__ ) slicer_itk::simple::Image::SetPixelAsVectorUInt64;
+%rename( __SetPixelAsVectorFloat32__ ) slicer_itk::simple::Image::SetPixelAsVectorFloat32;
+%rename( __SetPixelAsVectorFloat64__ ) slicer_itk::simple::Image::SetPixelAsVectorFloat64;
+%rename( __SetPixelAsComplexFloat32__ ) slicer_itk::simple::Image::SetPixelAsComplexFloat32;
+%rename( __SetPixelAsComplexFloat64__ ) slicer_itk::simple::Image::SetPixelAsComplextFloat64;
 
-%rename( __EvaluateAtContinuousIndex__ ) itk::simple::Image::EvaluateAtContinuousIndex;
-%rename( __EvaluateAtPhysicalPoint__ ) itk::simple::Image::EvaluateAtPhysicalPoint;
+%rename( __EvaluateAtContinuousIndex__ ) slicer_itk::simple::Image::EvaluateAtContinuousIndex;
+%rename( __EvaluateAtPhysicalPoint__ ) slicer_itk::simple::Image::EvaluateAtPhysicalPoint;
 
 %pythoncode %{
    import operator
@@ -72,7 +72,7 @@
    from collections import namedtuple
 %}
 
-%extend itk::simple::Image {
+%extend slicer_itk::simple::Image {
 
         Image __iadd__ ( const Image &i )
         {
@@ -174,7 +174,7 @@
                    std::vector< int > destinationIndex,
                    std::vector< bool > destinationSkipAxes)
         {
-        itk::simple::PasteImageFilter paster;
+        slicer_itk::simple::PasteImageFilter paster;
         paster.SetSourceSize(std::move(sourceSize));
         paster.SetSourceIndex(std::move(sourceIndex));
         paster.SetDestinationIndex(std::move(destinationIndex));
@@ -188,7 +188,7 @@
                    std::vector< int > destinationIndex,
                    std::vector< bool > destinationSkipAxes)
         {
-        itk::simple::PasteImageFilter paster;
+        slicer_itk::simple::PasteImageFilter paster;
         paster.SetSourceSize(std::move(sourceSize));
         paster.SetSourceIndex(std::move(sourceIndex));
         paster.SetDestinationIndex(std::move(destinationIndex));

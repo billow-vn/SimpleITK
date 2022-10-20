@@ -30,14 +30,14 @@
  //%feature("autodoc", "1");
 
 // ignore overload methods of int type when there is an enum
-%ignore itk::simple::CastImageFilter::SetOutputPixelType( PixelIDValueType pixelID );
-%ignore itk::simple::GetPixelIDValueAsString( PixelIDValueType type );
+%ignore slicer_itk::simple::CastImageFilter::SetOutputPixelType( PixelIDValueType pixelID );
+%ignore slicer_itk::simple::GetPixelIDValueAsString( PixelIDValueType type );
 
-%ignore itk::simple::Resample;
-%ignore itk::simple::ReadImage;
-%ignore itk::simple::WriteImage;
-%ignore itk::simple::SmoothinRecursiveGaussian;
-%ignore itk::simple::DiscreteGaussian;
+%ignore slicer_itk::simple::Resample;
+%ignore slicer_itk::simple::ReadImage;
+%ignore slicer_itk::simple::WriteImage;
+%ignore slicer_itk::simple::SmoothinRecursiveGaussian;
+%ignore slicer_itk::simple::DiscreteGaussian;
 
 
 // Make __str__ transparent by renaming ToString to __str__
@@ -57,19 +57,19 @@
 
 // Enable Python classes derived from Command Execute method to be
 // called from C++
-%feature("director") itk::simple::Command;
+%feature("director") slicer_itk::simple::Command;
 
-%extend itk::simple::ProcessObject {
- int AddCommand( itk::simple::EventEnum e, PyObject *obj )
+%extend slicer_itk::simple::ProcessObject {
+ int AddCommand( slicer_itk::simple::EventEnum e, PyObject *obj )
  {
    if (!PyCallable_Check(obj))
      {
      return 0;
      }
-   itk::simple::PyCommand *cmd = NULL;
+   slicer_itk::simple::PyCommand *cmd = NULL;
    try
      {
-       cmd = new itk::simple::PyCommand();
+       cmd = new slicer_itk::simple::PyCommand();
        cmd->SetCallbackPyCallable(obj);
        int ret = self->AddCommand(e,*cmd);
        cmd->OwnedByObjectsOn();
@@ -83,21 +83,21 @@
  }
 };
 
-%feature("director") itk::simple::LoggerBase;
+%feature("director") slicer_itk::simple::LoggerBase;
 
 
 
-%pythonappend itk::simple::ImageRegistrationMethod::Execute(const Image &, const Image &)
+%pythonappend slicer_itk::simple::ImageRegistrationMethod::Execute(const Image &, const Image &)
 {
   val = val.Downcast()
 };
 
-%pythonappend itk::simple::LandmarkBasedTransformInitializerFilter::Execute(const Transform &)
+%pythonappend slicer_itk::simple::LandmarkBasedTransformInitializerFilter::Execute(const Transform &)
 {
   val = val.Downcast()
 };
 
-%pythonappend itk::simple::LandmarkBasedTransformInitializer
+%pythonappend slicer_itk::simple::LandmarkBasedTransformInitializer
 {
   val = val.Downcast()
 };

@@ -57,7 +57,7 @@ extern "C"
     {
       SWIG_fail; // SWIG_fail is a macro that says goto: fail (return NULL)
     }
-    res = SWIG_ConvertPtr(pyImage, &voidImage, SWIGTYPE_p_itk__simple__Image, 0);
+    res = SWIG_ConvertPtr(pyImage, &voidImage, SWIGTYPE_p_slicer_itk__simple__Image, 0);
     if (!SWIG_IsOK(res))
     {
       SWIG_exception_fail(SWIG_ArgError(res),
@@ -124,7 +124,7 @@ extern "C"
     {
       void * voidImage;
       int    res = 0;
-      res = SWIG_ConvertPtr(pyImage, &voidImage, SWIGTYPE_p_itk__simple__Image, 0);
+      res = SWIG_ConvertPtr(pyImage, &voidImage, SWIGTYPE_p_slicer_itk__simple__Image, 0);
       if (!SWIG_IsOK(res))
       {
         SWIG_exception_fail(SWIG_ArgError(res),
