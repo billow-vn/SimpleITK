@@ -17,27 +17,27 @@
 *=========================================================================*/
 
 
-%pythonappend itk::simple::Transform::GetInverse() const
+%pythonappend slicer_itk::simple::Transform::GetInverse() const
 {
  val = val.Downcast()
 };
 
-%pythonappend itk::simple::CompositeTransform::GetBackTransform()
+%pythonappend slicer_itk::simple::CompositeTransform::GetBackTransform()
 {
  val = val.Downcast()
 };
 
-%pythonappend itk::simple::CompositeTransform::GetNthTransform(unsigned int)
+%pythonappend slicer_itk::simple::CompositeTransform::GetNthTransform(unsigned int)
 {
  val = val.Downcast()
 };
 
-%pythonappend itk::simple::ReadTransform( const std::string &filename )
+%pythonappend slicer_itk::simple::ReadTransform( const std::string &filename )
 {
  val = val.Downcast()
 };
 
-%extend itk::simple::Transform {
+%extend slicer_itk::simple::Transform {
    %pythoncode
 %{
 
