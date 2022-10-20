@@ -57,7 +57,7 @@ sitk_GetMemoryViewFromImage( PyObject *SWIGUNUSEDPARM(self), PyObject *args )
     {
     SWIG_fail; // SWIG_fail is a macro that says goto: fail (return NULL)
     }
-  res = SWIG_ConvertPtr( pyImage, &voidImage, SWIGTYPE_p_itk__simple__Image, 0 );
+  res = SWIG_ConvertPtr( pyImage, &voidImage, SWIGTYPE_p_slicer_itk__simple__Image, 0 );
   if( !SWIG_IsOK( res ) )
     {
     SWIG_exception_fail(SWIG_ArgError(res), "in method 'GetByteArrayFromImage', argument needs to be of type 'sitk::Image *'");
@@ -123,7 +123,7 @@ sitk_SetImageFromArray( PyObject *SWIGUNUSEDPARM(self), PyObject *args )
   {
     void * voidImage;
     int res = 0;
-    res = SWIG_ConvertPtr( pyImage, &voidImage, SWIGTYPE_p_itk__simple__Image, 0 );
+    res = SWIG_ConvertPtr( pyImage, &voidImage, SWIGTYPE_p_slicer_itk__simple__Image, 0 );
     if( !SWIG_IsOK( res ) )
       {
       SWIG_exception_fail(SWIG_ArgError(res), "in method 'SetImageFromArray', argument needs to be of type 'sitk::Image *'");
