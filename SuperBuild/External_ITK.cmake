@@ -27,6 +27,10 @@ if (NOT DEFINED Module_ITKIOTransformMINC)
   set(Module_ITKIOTransformMINC ON)
 endif()
 
+if (NOT DEFINED Module_GenericLabelInterpolator)
+  set(Module_GenericLabelInterpolator ON)
+endif()
+
 if (NOT DEFINED ITK_DEFAULT_THREADER)
   set( ITK_DEFAULT_THREADER "Platform")
 endif()
@@ -48,7 +52,7 @@ foreach (_varName ${_varNames})
 endforeach()
 
 list(APPEND ITK_VARS
-  PYTHON_EXECUTABLE
+  Python_EXECUTABLE
   )
 
 VariableListToCache( ITK_VARS  ep_itk_cache )
@@ -62,7 +66,8 @@ set(ITK_GIT_REPOSITORY "${git_protocol}://github.com/InsightSoftwareConsortium/I
 mark_as_advanced(ITK_GIT_REPOSITORY)
 sitk_legacy_naming(ITK_GIT_REPOSITORY ITK_REPOSITORY)
 
-set(_DEFAULT_ITK_GIT_TAG "v5.3.0")
+# Along 5.3.0 release branch
+set(_DEFAULT_ITK_GIT_TAG "fc8ee74bde4669d5688dc5114b99790bd711c814")
 set(ITK_GIT_TAG "${_DEFAULT_ITK_GIT_TAG}" CACHE STRING "Tag in ITK git repo")
 mark_as_advanced(ITK_GIT_TAG)
 set(ITK_TAG_COMMAND GIT_TAG "${ITK_GIT_TAG}")
@@ -83,11 +88,11 @@ else()
     "-DITK_TEMPLATE_VISIBILITY_DEFAULT:BOOL=OFF" )
 endif()
 
-
-if( ITK_GIT_TAG STREQUAL _DEFAULT_ITK_GIT_TAG )
-  # Unable to use ITK_LEGACY_REMOVE due to change in the enum types.
-  # list( APPEND ep_itk_args "-DITK_LEGACY_REMOVE:BOOL=ON" )
+if (NOT DEFINED CMAKE_CXX_STANDARD)
+  list( APPEND ep_itk_args "-DCMAKE_CXX_STANDARD:STRING=17")
 endif()
+
+list( APPEND ep_itk_args "-DITK_LEGACY_REMOVE:BOOL=ON" )
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${proj}-build/CMakeCacheInit.txt" "${ep_itk_cache}\n${ep_common_cache}" )
 

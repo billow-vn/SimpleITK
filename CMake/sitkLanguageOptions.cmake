@@ -106,9 +106,13 @@ endif()
 
 sitkLanguageShouldDoFindPackage( PYTHON )
 
+if ( DEFINED PYTHON_EXECUTABLE AND NOT DEFINED Python_EXECUTABLE)
+  message(WARNING "Use Python_EXECUTABLE! Ignoring PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}" )
+endif()
+
 if( _do_find_package )
 
-  find_package ( PythonInterp ${_find_package_extra_args})
+  set( WRAP_PYTHON_DEFAULT OFF )
 
   # if we don't need to link against a library, the make the
   # find_package quiet.
@@ -116,17 +120,19 @@ if( _do_find_package )
     set( _find_package_extra_args "QUIET" )
   endif()
 
-  if ( PYTHONINTERP_FOUND )
-    find_package ( PythonLibs ${PYTHON_VERSION_STRING} EXACT ${_find_package_extra_args} )
-  else ()
-    find_package ( PythonLibs ${_find_package_extra_args} )
+  if (NOT DEFINED Python_FIND_UNVERSIONED_NAMES)
+    # Addressed issue with using rename python executables on windows with venv
+    # https://github.com/msys2/MINGW-packages/issues/5001
+    set( Python_FIND_UNVERSIONED_NAMES "FIRST")
   endif()
 
-  if ( PYTHONLIBS_FOUND AND PYTHONINTERP_FOUND
-      AND (PYTHON_VERSION_STRING VERSION_EQUAL PYTHONLIBS_VERSION_STRING) )
+  if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.19)
+    set(_Python_VERSION_REQUIREMENT "3.7.0...<4")
+  endif()
+
+  find_package( Python ${_Python_VERSION_REQUIREMENT} ${_find_package_extra_args} COMPONENTS Development.Module Interpreter)
+  if ( Python_Interpreter_FOUND AND Python_Development.Module_FOUND )
     set( WRAP_PYTHON_DEFAULT ON )
-  else()
-    set( WRAP_PYTHON_DEFAULT OFF )
   endif()
 endif()
 
@@ -134,24 +140,15 @@ option( WRAP_PYTHON "Wrap Python" ${WRAP_PYTHON_DEFAULT} )
 
 
 if ( WRAP_PYTHON )
-  if ( PYTHON_VERSION_STRING VERSION_LESS 2.7 )
-    message( WARNING "Python version less than 2.7: \"${PYTHON_VERSION_STRING}\"." )
-  endif()
 
   list( APPEND SITK_LANGUAGES_VARS
-    PYTHON_DEBUG_LIBRARY
-    PYTHON_EXECUTABLE
-    PYTHON_LIBRARY
-    PYTHON_INCLUDE_DIR
-    #  PYTHON_INCLUDE_PATH ( deprecated )
+    Python_ROOT_DIR
+    Python_EXECUTABLE
+    Python_LIBRARY
+    Python_INCLUDE_DIR
+    Python_LIBRARY_DEBUG
+    Python_LIBRARY_RELEASE
     )
-# Debian "jessie" has this additional variable required to match
-# python versions.
-  if(PYTHON_INCLUDE_DIR2)
-    list( APPEND SITK_LANGUAGES_VARS
-      PYTHON_INCLUDE_DIR2
-      )
-  endif()
 endif ()
 
 

@@ -18,14 +18,12 @@ referenced:
       DASHBOARD_BRANCH_DIRECTORY: /home/circleci/dashboard
       ExternalData_OBJECT_STORES: /home/circleci/.ExternalData
       CCACHE_NODIRECT: 1
-  dependencies: &dependencies
+  cc-dependencies: &cc-dependencies
     run:
       name: Dependencies
       command: |
         sudo apt-get update
-        sudo apt-get install -y rsync lua5.3 ccache python3-dev file
-        python -m pip install --upgrade pip
-        python -m pip install scikit-ci-addons lxml # Provides "ctest_junit_formatter" add-on
+        sudo apt-get install -y lua5.3 ccache
   generate-hash-step: &generate-hash-step
     run:
       name: Generate external data hash
@@ -54,17 +52,6 @@ referenced:
        command: |
          echo 'export DASHBOARD_MODEL=$( [[ "$CIRCLE_BRANCH" = "master" || "$CIRCLE_BRANCH" = "next"  || "$CIRCLE_BRANCH" = "release" ]] && echo Continuous || echo Experimental )' >> $BASH_ENV
          echo 'export PATH=/usr/lib/ccache:${PATH}' >> $BASH_ENV
-  junit-formatting: &junit-formatting
-     run:
-       name: Formatting CTest for JUnit
-       when: always
-       command: |
-         mkdir -p /tmp/test-results
-         python -m ci_addons ctest_junit_formatter ${CTEST_BINARY_DIRECTORY} > /tmp/test-results/JUnit-${CIRCLE_NODE_INDEX}.xml
-  junit-store-test-results: &junit-store-test-results
-    store_test_results:
-          path: /tmp/test-results
-          destination: ctest
 
 version: 2
 jobs:
@@ -82,14 +69,16 @@ jobs:
       - *restore-data-step
       - *restore-ccache-step
       - *clone-dashboard-step
-      - *dependencies
+      - *cc-dependencies
       - *env-step
       - run:
           name: CCache initialization
           command: |
+            mkdir -p /home/circleci/.ccache
             ccache --show-stats
             ccache --zero-stats
             ccache --max-size=2.0G
+            ccache --show-config
       - run:
           name: Build and Testing with CTest
           no_output_timeout: 20.0m
@@ -109,8 +98,6 @@ jobs:
           when: always
           command: |
             ccache --show-stats
-      - *junit-formatting
-      - *junit-store-test-results
       - save_cache:
           key: 'ccache-{{ arch }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/home/circleci/.ccache" ]
@@ -133,14 +120,13 @@ jobs:
     environment:
       <<: *default_environment_keys
       CTEST_BINARY_DIRECTORY: "/home/circleci/SimpleITK-py"
-    resource_class: medium
+      PARALLEL_LEVEL: 1
     steps:
       - checkout:
           path : ~/SimpleITK
       - *generate-hash-step
       - *restore-data-step
       - *clone-dashboard-step
-      - *dependencies
       - *env-step
       - attach_workspace:
           at: /home/circleci/SimpleITK-build
@@ -149,13 +135,13 @@ jobs:
           no_output_timeout: 20.0m
           command: |
             env
-            _python_include=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")
             export LD_LIBRARY_PATH="${ROOT_BINARY_DIRECTORY}/ITK-prefix/lib/:${ROOT_BINARY_DIRECTORY}/lib"
             export CTEST_CACHE="
                         CMAKE_PREFIX_PATH:PATH=${ROOT_BINARY_DIRECTORY}
                         SWIG_EXECUTABLE:PATH=${ROOT_BINARY_DIRECTORY}/Swig/bin/swig
                         BUILD_EXAMPLES:BOOL=ON
-                        PYTHON_INCLUDE_DIR:PATH=${_python_include}"
+                        Python_EXECUTABLE:PATH=$(which python)
+            "
             ctest -V -Ddashboard_source_config_dir:PATH="Wrapping/Python" -S "${CTEST_SOURCE_DIRECTORY}/.circleci/circleci.cmake"
       - run:
           name: "CMake Cache Dump"
@@ -163,24 +149,21 @@ jobs:
             ls ${CTEST_BINARY_DIRECTORY}
             cat ${CTEST_BINARY_DIRECTORY}/CMakeCache.txt
           when: on_fail
-      - *junit-formatting
-      - *junit-store-test-results
 
-  python3.10-and-test:
+  python3.11-and-test:
     <<: *defaults
     docker:
-     - image: cimg/python:3.10
+     - image: cimg/python:3.11
     environment:
       <<: *default_environment_keys
       CTEST_BINARY_DIRECTORY: "/home/circleci/SimpleITK-py"
-    resource_class: medium
+      PARALLEL_LEVEL: 1
     steps:
       - checkout:
           path : ~/SimpleITK
       - *generate-hash-step
       - *restore-data-step
       - *clone-dashboard-step
-      - *dependencies
       - *env-step
       - attach_workspace:
           at: /home/circleci/SimpleITK-build
@@ -193,10 +176,10 @@ jobs:
             export CTEST_CACHE="
                         CMAKE_PREFIX_PATH:PATH=${ROOT_BINARY_DIRECTORY}
                         SWIG_EXECUTABLE:PATH=${ROOT_BINARY_DIRECTORY}/Swig/bin/swig
-                        BUILD_EXAMPLES:BOOL=ON"
+                        BUILD_EXAMPLES:BOOL=ON
+                        Python_EXECUTABLE:PATH=$(which python)
+            "
             ctest -V -Ddashboard_source_config_dir:PATH="Wrapping/Python" -S "${CTEST_SOURCE_DIRECTORY}/.circleci/circleci.cmake"
-      - *junit-formatting
-      - *junit-store-test-results
   r-and-test:
     <<: *defaults
     resource_class: medium
@@ -209,7 +192,6 @@ jobs:
       - *generate-hash-step
       - *restore-data-step
       - *clone-dashboard-step
-      - *dependencies
       - *env-step
       - run:
           name: Additional Dependencies
@@ -228,12 +210,10 @@ jobs:
                         SWIG_EXECUTABLE:PATH=${ROOT_BINARY_DIRECTORY}/Swig/bin/swig
                         BUILD_EXAMPLES:BOOL=ON"
             ctest -V -Ddashboard_source_config_dir:PATH="Wrapping/R" -S "${CTEST_SOURCE_DIRECTORY}/.circleci/circleci.cmake"
-      - *junit-formatting
-      - *junit-store-test-results
   java-and-test:
     <<: *defaults
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/openjdk:8.0
     resource_class: medium
     environment:
       <<: *default_environment_keys
@@ -244,11 +224,6 @@ jobs:
       - *generate-hash-step
       - *restore-data-step
       - *clone-dashboard-step
-      - *dependencies
-      - run:
-          name: Prerequisite Dependencies
-          command: |
-            sudo apt-get install default-jdk
       - *env-step
       - run:
           name: Additional Dependencies
@@ -266,8 +241,6 @@ jobs:
                         SWIG_EXECUTABLE:PATH=${ROOT_BINARY_DIRECTORY}/Swig/bin/swig
                         BUILD_EXAMPLES:BOOL=ON"
             ctest -V -Ddashboard_source_config_dir:PATH="Wrapping/Java" -S "${CTEST_SOURCE_DIRECTORY}/.circleci/circleci.cmake"
-      - *junit-formatting
-      - *junit-store-test-results
 workflows:
   version: 2
   build_and_test:
@@ -282,7 +255,7 @@ workflows:
       - python3.8-and-test:
           requires:
             - build-and-test
-      - python3.10-and-test:
+      - python3.11-and-test:
           requires:
             - build-and-test
       - r-and-test:

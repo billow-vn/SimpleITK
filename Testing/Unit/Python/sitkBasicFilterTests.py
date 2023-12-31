@@ -128,10 +128,33 @@ class BasicFiltersTests(unittest.TestCase):
 
         self.assertEqual(tx_initializer.Execute(sitk.VersorRigid3DTransform()).__class__,
                          sitk.VersorRigid3DTransform)
+        self.assertEqual(tx_initializer.Execute(sitk.Similarity3DTransform()).__class__,
+                         sitk.Similarity3DTransform)
         self.assertEqual(tx_initializer.Execute(sitk.ScaleVersor3DTransform()).__class__,
                         sitk.ScaleVersor3DTransform)
         self.assertEqual(tx_initializer.Execute(sitk.AffineTransform(3)).__class__,
                         sitk.AffineTransform)
+
+    def test_minimum_maximum(self):
+        """
+        Test the manual written MinimumMaximum procedural method
+        :return:
+        """
+
+        img = sitk.Image([32, 32], sitk.sitkFloat32)
+
+        self.assertEqual(sitk.MinimumMaximum(img), (0.0, 0.0))
+
+        img[0, 0] = -1.0
+        img[10, 10] = 2.0
+        self.assertEqual(sitk.MinimumMaximum(img), (-1.0, 2.0))
+
+        img = sitk.Image([32, 32], sitk.sitkUInt8)
+        self.assertEqual(sitk.MinimumMaximum(img), (0.0, 0.0))
+
+        img += 1
+        img[10, 10] = 255
+        self.assertEqual(sitk.MinimumMaximum(img), (1.0, 255.0))
 
 
 if __name__ == '__main__':

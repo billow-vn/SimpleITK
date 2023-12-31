@@ -32,10 +32,21 @@
  val = val.Downcast()
 };
 
-%pythonappend slicer_itk::simple::ReadTransform( const std::string &filename )
+%pythonprepend slicer_itk::simple::ReadTransform
+{
+  filename=str(filename)
+};
+%pythonappend slicer_itk::simple::ReadTransform
 {
  val = val.Downcast()
 };
+%pythonprepend slicer_itk::simple::WriteTransform %{
+  filename = str(filename)
+%}
+
+%pythonprepend slicer_itk::simple::Transform::WriteTransform %{
+  filename = str(filename)
+%}
 
 %extend slicer_itk::simple::Transform {
    %pythoncode

@@ -739,6 +739,9 @@ TEST( Interpolator, Test1 )
   ss.str("");
   ss << sitk::sitkBlackmanWindowedSinc;
   EXPECT_EQ("BlackmanWindowedSinc", ss.str());
+  ss.str("");
+  ss << sitk::sitkLabelLinear;
+  EXPECT_EQ("LabelLinear", ss.str());
 
 }
 
@@ -815,33 +818,6 @@ TEST(Logger, Logger)
   EXPECT_EQ( testing::internal::GetCapturedStderr(), expectedOutput);
 }
 
-namespace {
-// A mockup of a logger which saves messages to strings.
-class MockLogger
-:public itk::simple::LoggerBase {
-public:
-
-  MockLogger() = default;
-
-  ~MockLogger() override = default;
-
-  void DisplayText(const char * t) override {m_DisplayText << t;}
-
-  void DisplayErrorText(const char * t) override {m_DisplayErrorText << t;}
-
-  void DisplayWarningText(const char * t) override {m_DisplayWarningText << t;}
-
-  void DisplayGenericOutputText(const char * t) override {m_DisplayGenericOutputText << t;}
-
-  void DisplayDebugText(const char * t) override {m_DisplayDebugText << t;}
-
-  std::stringstream m_DisplayText;
-  std::stringstream m_DisplayErrorText;
-  std::stringstream m_DisplayWarningText;
-  std::stringstream m_DisplayGenericOutputText;
-  std::stringstream m_DisplayDebugText;
-};
-}
 
 
 TEST(Logger, MockLogger)
@@ -884,4 +860,62 @@ TEST(Logger, MockLogger)
 
   EXPECT_EQ( testing::internal::GetCapturedStderr(), expectedLogOutput);
 
+}
+
+#define FROM_STRING_CHECK(pixel_id) \
+{                                   \
+  std::string str( #pixel_id );                                 \
+  EXPECT_EQ(itk::simple::pixel_id, itk::simple::GetPixelIDValueFromString( str )); \
+}
+
+TEST(PixelID, FromString)
+{
+  FROM_STRING_CHECK(sitkUInt8);
+  FROM_STRING_CHECK(sitkInt8);
+  FROM_STRING_CHECK(sitkUInt16);
+  FROM_STRING_CHECK(sitkInt16);
+  FROM_STRING_CHECK(sitkUInt32);
+  FROM_STRING_CHECK(sitkInt32);
+  FROM_STRING_CHECK(sitkUInt64);
+  FROM_STRING_CHECK(sitkInt64);
+  FROM_STRING_CHECK(sitkFloat32);
+  FROM_STRING_CHECK(sitkFloat64);
+  FROM_STRING_CHECK(sitkComplexFloat32);
+  FROM_STRING_CHECK(sitkComplexFloat64);
+  FROM_STRING_CHECK(sitkVectorUInt8);
+  FROM_STRING_CHECK(sitkVectorInt8);
+  FROM_STRING_CHECK(sitkVectorUInt16);
+  FROM_STRING_CHECK(sitkVectorInt16);
+  FROM_STRING_CHECK(sitkVectorUInt32);
+  FROM_STRING_CHECK(sitkVectorInt32);
+  FROM_STRING_CHECK(sitkVectorUInt64);
+  FROM_STRING_CHECK(sitkVectorInt64);
+  FROM_STRING_CHECK(sitkVectorFloat32);
+  FROM_STRING_CHECK(sitkVectorFloat64);
+
+  FROM_STRING_CHECK(sitkLabelUInt8);
+  FROM_STRING_CHECK(sitkLabelUInt16);
+  FROM_STRING_CHECK(sitkLabelUInt32);
+  FROM_STRING_CHECK(sitkLabelUInt64);
+
+  FROM_STRING_CHECK(sitkUnknown);
+}
+
+
+TEST(PixelID, TypeListHasPixelIDValue)
+{
+  namespace sitk = itk::simple;
+
+  EXPECT_FALSE(sitk::TypeListHasPixelIDValue(sitk::sitkUnknown));
+  for (auto id : {sitk::sitkUInt8, sitk::sitkFloat32,
+       sitk::sitkLabelUInt16, sitk::sitkComplexFloat64,
+       sitk::sitkVectorInt16, sitk::sitkVectorFloat64})
+  EXPECT_TRUE(sitk::TypeListHasPixelIDValue(id) );
+
+
+  EXPECT_TRUE(sitk::TypeListHasPixelIDValue<sitk::IntegerPixelIDTypeList>(sitk::sitkInt16));
+  for (auto id : {sitk::sitkLabelUInt8, sitk::sitkComplexFloat32, sitk::sitkFloat32, sitk::sitkVectorInt16})
+  {
+    EXPECT_FALSE(sitk::TypeListHasPixelIDValue<sitk::IntegerPixelIDTypeList>(id));
+  };
 }

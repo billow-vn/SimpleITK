@@ -58,7 +58,7 @@
 %ignore slicer_itk::simple::Image::GetITKBase( void );
 %ignore slicer_itk::simple::Image::GetITKBase( void ) const;
 
-#if !(defined(SWIGCSHARP)
+#if !defined(SWIGCSHARP)
 %ignore slicer_itk::simple::Image::GetBufferAsInt8();
 %ignore slicer_itk::simple::Image::GetBufferAsUInt8();
 %ignore slicer_itk::simple::Image::GetBufferAsInt16();

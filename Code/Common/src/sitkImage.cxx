@@ -40,6 +40,15 @@ namespace itk
     Allocate ( {0, 0}, sitkUInt8, 1 );
   }
 
+  Image::Image( std::unique_ptr<PimpleImageBase> pimpleImage )
+  : m_PimpleImage( std::move(pimpleImage) )
+  {
+      if (!this->m_PimpleImage)
+      {
+          sitkExceptionMacro("Invalid nullptr pimpleImage.");
+      }
+  }
+
   Image::Image( const Image &img )
   : m_PimpleImage( img.m_PimpleImage->ShallowCopy())
   {
@@ -77,6 +86,18 @@ namespace itk
     Image::Image( const std::vector< unsigned int > &size, PixelIDValueEnum ValueEnum, unsigned int numberOfComponents )
     {
       Allocate( size, ValueEnum, numberOfComponents );
+    }
+
+
+    Image Image::ProxyForInPlaceOperation()
+    {
+        if ( m_PimpleImage ) {
+            this->MakeUnique();
+            auto proxy =m_PimpleImage->ProxyCopy();
+            assert(proxy);
+            return Image(std::move(proxy));
+        }
+        return Image();
     }
 
     itk::DataObject* Image::GetITKBase( )
@@ -200,6 +221,7 @@ namespace itk
       assert( m_PimpleImage );
       return this->m_PimpleImage->ToString();
     }
+
 
     std::vector< unsigned int > Image::GetSize( ) const
     {
@@ -810,7 +832,7 @@ namespace itk
       assert( m_PimpleImage );
       if ( this->m_PimpleImage->GetReferenceCountOfImage() > 1 )
         {
-        this->m_PimpleImage.reset( this->m_PimpleImage->DeepCopy() );
+        this->m_PimpleImage = this->m_PimpleImage->DeepCopy();
         }
 
     }

@@ -13,7 +13,7 @@ namespace itk {
 
               if (type == sitkUnknown)
               {
-                  // Unknow must be first because other enums may be -1 if they are
+                  // Unknown must be first because other enums may be -1 if they are
                   // not instantiated
                   return "Unknown pixel id";
               }
@@ -69,7 +69,7 @@ namespace itk {
 
               if (enumString == "sitkUnknown")
               {
-                  // Unknow must be first because other enums may be -1 if they are
+                  // Unknown must be first because other enums may be -1 if they are
                   // not instantiated
                   return sitkUnknown;
               }
@@ -121,7 +121,7 @@ TransformixImageFilter::TransformixImageFilterImpl
   this->m_MemberFactory->RegisterMemberFunctions< FloatPixelIDTypeList, 2 >();
   this->m_MemberFactory->RegisterMemberFunctions< FloatPixelIDTypeList, 3 >();
 
-#ifdef SITK_4D_IMAGES
+#if SITK_MAX_DIMENSIONS >= 4
   m_MemberFactory->RegisterMemberFunctions< FloatPixelIDTypeList, 4 >();
 #endif
 

@@ -16,6 +16,45 @@ classes. The OO style produces more verbose code which clearly labels the
 parameters set by class member functions.
 
 
+Example Run
+-----------
+
+Running the Python code as follows:
+
+``main('docs/images/BrainProtonDensitySlice.png', 2.0, 'output.png')``
+
+modifies the input image to the output image below.
+
+.. exec_code::
+    :hide_output:
+
+    # --- hide: start ---
+    from example_utils import run_example, save_image
+    args = ['../../docs/images/BrainProtonDensitySlice.png',
+            2.0,
+            '/tmp/gaussian_out.png',
+            ]
+    return_dict = run_example('SimpleGaussian', 'main', args)
+    for key, value in return_dict.items():
+        save_image(value, f"SimpleGaussian_{key}")
+
+    # --- hide: stop ---
+
+Input/Output Images
+^^^^^^^^^^^^^^^^^^^
+
+.. figure:: ../images/SimpleGaussian_input_image.png
+   :scale: 100%
+
+   **Input Image**
+
+.. figure:: ../images/SimpleGaussian_blur_image.png
+   :scale: 100%
+
+   **Output Image**
+
+
+
 Code
 ----
 
@@ -49,7 +88,7 @@ Code
 
     .. literalinclude:: ../../Examples/SimpleGaussian/SimpleGaussian.py
        :language: python
-       :lines: 1,19-
+       :lines: 1,22-53
 
   .. tab:: R
 

@@ -14,7 +14,7 @@ ElastixImageFilter::ElastixImageFilterImpl
   this->m_DualMemberFactory->RegisterMemberFunctions< FloatPixelIDTypeList, FloatPixelIDTypeList, 2 >();
   this->m_DualMemberFactory->RegisterMemberFunctions< FloatPixelIDTypeList, FloatPixelIDTypeList, 3 >();
 
-#ifdef SITK_4D_IMAGES
+#if SITK_MAX_DIMENSION >= 4
   this->m_DualMemberFactory->RegisterMemberFunctions< FloatPixelIDTypeList, FloatPixelIDTypeList, 4 >();
 #endif
 
@@ -241,6 +241,11 @@ ElastixImageFilter::ElastixImageFilterImpl
       parameterMapVector[ i ][ "MovingInternalImagePixelType" ]
         = ParameterValueVectorType( 1, "float" );
     }
+
+    // Always set WriteResultImage to true. If WriteResultImage is false, elastixFilter will not produce an output image,
+    // and the call to itk::simple::Image() below will throw a "LargestPossibleRegion != BufferedRegion" exception. We also
+    // need the output image to honor SimpleITK's convention of Execute() always returning an image.
+    parameterMapVector[ parameterMapVector.size() - 1 ][ "WriteResultImage" ] = ParameterValueVectorType( 1, "true" );
 
     ParameterObjectPointer parameterObject = ParameterObjectType::New();
     parameterObject->SetParameterMap( parameterMapVector );
@@ -928,7 +933,7 @@ ElastixImageFilter::ElastixImageFilterImpl::ParameterValueVectorType
 ElastixImageFilter::ElastixImageFilterImpl
 ::GetParameter( const ParameterKeyType key )
 {
-  if( this->m_ParameterMapVector.size() > 0 )
+  if( this->m_ParameterMapVector.size() > 1 )
   {
     sitkExceptionMacro( "An index is needed when more than one parameter map is present. Please specify the parameter map number as the first argument." );
   }

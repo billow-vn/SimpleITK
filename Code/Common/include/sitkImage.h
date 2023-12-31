@@ -97,6 +97,27 @@ namespace simple
      */
     Image( Image &&img ) noexcept;
     Image& operator=( Image &&img ) noexcept;
+
+    /** \brief Advanced method not commonly needed
+     *
+     * This method is designed to support implementations "in-place" object behavior for methods which operate on
+     * r-value references. The returned image is a new image which has a low level pointer to this object's image
+     * buffer, without the SimpleITK or ITK reference counting. This is implemented by setting the new ITK Image's
+     * buffer to the same as this objects without ownership.
+     *
+     * \warning This method bypasses the SimpleITK reference counting, and the reference needs to be manually maintained
+     *  in the scope. The resulting object is designed only to be a temporary.
+     *
+     * In the following example this method is used instead of an `std::move` call when the filter's first argument
+     * takes an r-value reference. The `img` object will container the results of the filter execution, and the `img`
+     * image buffer will be preserved in case of exceptions, and the meta-data will remain in the img object.
+     * \code
+     * filter.Execute( img.ProxyForInPlaceOperation() );
+     * \endcode
+     *
+     * The meta-data dictionary is not copied to the returned proxy image.
+     */
+    Image ProxyForInPlaceOperation();
 #endif
 
 
@@ -350,6 +371,45 @@ namespace simple
 
     std::string ToString( ) const;
 
+    /** \brief Convert the first dimension to the components for image with vector pixel type.
+     *
+     * This method will convert a scalar image to a vector image with
+     * the number of components equal to the size of the first
+     * dimension. If the image is already a vector image then the
+     * image is returned.
+     *
+     * The components of the direction cosine matrix for the first dimension must be the identity matrix, or else an
+     * exception is thrown.
+     *
+     * An exception is thrown if the image is 2D or if the pixel type is a label or complex pixel type.
+     *
+     * \param inPlace If true then the image is made unique and converted in place updating this image,
+     * otherwise a copy of the image is made and returned.
+     *
+     * \sa ToScalarImage
+     */
+    Image ToVectorImage(bool inPlace = true);
+
+    /** \brief Convert a image of vector pixel type to a scalar image with N+1 dimensions.
+     *
+     * This method will convert a vector image to a scalar image with
+     * the size of the first dimension equal to the number of
+     * components. If the image is already a scalar image then the
+     * image is returned.
+     *
+     * For the additional dimension the origin is set to zero, the spacing to one, and the new components of the
+     * direction cosine to the identity matrix.
+     *
+     * An exception is thrown if the image is has SITK_MAX_DIMENSION dimensions or if the pixel type is a label or
+     * complex pixel type.
+     *
+     * \param inPlace If true then the image is made unique and converted in place updating this image,
+     * otherwise a copy of the image is made and returned.
+     *
+     * \sa ToVectorImage
+     */
+    Image ToScalarImage(bool inPlace = true);
+
     /** \brief Get the value of a pixel
      *
      * Returns the value of a pixel for the given index. The index
@@ -528,6 +588,25 @@ namespace simple
     AllocateInternal ( const std::vector<unsigned int > &size, unsigned int numberOfComponents );
     /**@}*/
 
+    /** \brief Internal methods for converting images between vectors and scalars
+     *  @{
+     */
+    template<class TImageType>
+    std::enable_if_t<IsVector<TImageType>::Value, Image>
+    ToVectorInternal(bool inPlace);
+
+    template<class TImageType>
+    std::enable_if_t<IsBasic<TImageType>::Value, Image>
+    ToVectorInternal(bool inPlace);
+
+    template<class TImageType>
+    std::enable_if_t<IsVector<TImageType>::Value, Image>
+    ToScalarInternal(bool inPlace);
+
+    template<class TImageType>
+    std::enable_if_t<IsBasic<TImageType>::Value, Image>
+    ToScalarInternal(bool inPlace);
+    /**@}*/
 
   private:
 
@@ -541,12 +620,18 @@ namespace simple
      */
     void InternalInitialization( PixelIDValueType type, unsigned  int dimension, itk::DataObject *image );
 
+
+    Image( std::unique_ptr<PimpleImageBase> pimpleImage );
+
+
     template <typename TImageType>
     PimpleImageBase * DispatchedInternalInitialization(itk::DataObject *image);
 
 
     friend struct DispatchedInternalInitialiationAddressor;
     friend struct AllocateMemberFunctionAddressor;
+    friend struct ToVectorAddressor;
+    friend struct ToScalarAddressor;
 
 
     std::unique_ptr<PimpleImageBase> m_PimpleImage;

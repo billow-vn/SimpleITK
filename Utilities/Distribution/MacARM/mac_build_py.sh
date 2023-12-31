@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 
 # This script is hard coded to point to the installed location
@@ -9,18 +9,23 @@ PY_MAJOR=3
 PY_MINOR=8
 PY_VERSION=3.8
 
-if [ $1 == "3.9" ]
+if [ "$1" == "3.9" ]
 then
     PY_MAJOR=3
     PY_MINOR=9
     PY_VERSION=3.9
-fi
-if [ $1 == "3.10" ]
+elif [ "$1" == "3.10" ]
 then
     PY_MAJOR=3
     PY_MINOR=10
     PY_VERSION=3.10
+elif [ "$1" == "3.11" ]
+then
+    PY_MAJOR=3
+    PY_MINOR=11
+    PY_VERSION=3.11
 fi
+
 
 PY_DIR=/Library/Frameworks/Python.framework/Versions/${PY_VERSION}
 echo $PY_DIR
@@ -48,9 +53,7 @@ cmake \
     -D "SWIG_EXECUTABLE:FILEPATH=${COREBINARYDIRECTORY}/Swig/bin/swig" \
     -D "BUILD_EXAMPLES:BOOL=ON" \
     -D "BUILD_TESTING:BOOL=ON" \
-    -D "PYTHON_EXECUTABLE:FILEPATH=${PY_DIR}/bin/python${PY_MAJOR}" \
-    -D "PYTHON_INCLUDE_DIR:PATH=${PY_DIR}/include/python${PY_VERSION}" \
-    -D "PYTHON_LIBRARY:FILEPATH=${PY_DIR}/libpython${PY_VERSION}.dylib" \
+    -D "Python_EXECUTABLE:FILEPATH=${PY_DIR}/bin/python${PY_MAJOR}" \
     -D "SimpleITK_PYTHON_PLAT_NAME:STRING=macosx-11.0-arm64" \
     -D "SimpleITK_BUILD_DISTRIBUTE:BOOL=ON" \
     -D "SimpleITK_PYTHON_WHEEL:BOOL=1" \

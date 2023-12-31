@@ -43,13 +43,15 @@ namespace itk
 
     virtual ~PimpleImageBase( ) = default;
 
+    virtual std::unique_ptr<PimpleImageBase> ProxyCopy() = 0;
+
     virtual PixelIDValueEnum GetPixelID() const = 0;
     virtual unsigned int GetDimension( ) const  = 0;
     virtual uint64_t GetNumberOfPixels( ) const = 0;
     virtual unsigned int GetNumberOfComponentsPerPixel( ) const = 0;
 
-    virtual PimpleImageBase *ShallowCopy() const = 0;
-    virtual PimpleImageBase *DeepCopy() const = 0;
+    virtual std::unique_ptr<PimpleImageBase> ShallowCopy() const = 0;
+    virtual std::unique_ptr<PimpleImageBase> DeepCopy() const = 0;
     virtual itk::DataObject* GetDataBase( ) = 0;
     virtual const itk::DataObject* GetDataBase( ) const = 0;
 
