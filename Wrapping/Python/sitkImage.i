@@ -198,13 +198,13 @@
         }
         Image __imasked_assign(const Image &mask,  const Image &assign)
         {
-          itk::simple::MaskedAssignImageFilter ma;
+          slicer_itk::simple::MaskedAssignImageFilter ma;
           ma.Execute($self->ProxyForInPlaceOperation(), mask, assign);
           return *$self;
         }
         Image __imasked_assign(const Image &mask,  double constant)
         {
-          itk::simple::MaskedAssignImageFilter ma;
+          slicer_itk::simple::MaskedAssignImageFilter ma;
           ma.SetAssignConstant(constant);
           ma.Execute($self->ProxyForInPlaceOperation(), mask);
           return *$self;

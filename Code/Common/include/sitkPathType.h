@@ -20,6 +20,8 @@
 
 #include <string>
 
+#include "sitkConfigure.h"
+
 namespace itk::simple
 {
 using PathType = std::string;

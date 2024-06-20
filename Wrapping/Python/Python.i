@@ -102,12 +102,12 @@
   val = val.Downcast()
 };
 
-%pythonappend itk::simple::CenteredTransformInitializerFilter::Execute
+%pythonappend slicer_itk::simple::CenteredTransformInitializerFilter::Execute
 {
   val = val.Downcast()
 };
 
-%pythonappend itk::simple::CenteredTransformInitializer
+%pythonappend slicer_itk::simple::CenteredTransformInitializer
 {
   val = val.Downcast()
 };
