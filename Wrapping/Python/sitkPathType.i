@@ -60,7 +60,7 @@ struct SWIG_sitk_PathType_IteratorProtocol {
 
 }
 
-%typemap(in, fragment="SWIG_sitk_PathType", fragment="<type_traits>") slicer_itk::simple::PathType {
+%typemap(in, fragment="SWIG_sitk_PathType", fragment="<type_traits>") itk::simple::PathType {
   This is not being currently used
   if (PyUnicode_Check($input)) {
     PyObject *bytes = NULL;
@@ -82,28 +82,28 @@ struct SWIG_sitk_PathType_IteratorProtocol {
       %argument_fail(res, "$type", $symname, $argnum);
     }
   std::string * temp = %reinterpret_cast(ptr, $1_ltype*);
-  $1 = slicer_itk::simple::PathType(*temp);
+  $1 = itk::simple::PathType(*temp);
   }
 
 }
-%typemap(freearg) slicer_itk::simple::Path {}
+%typemap(freearg) itk::simple::Path {}
 
 
-%typemap(freearg) slicer_itk::simple::PathType {}
+%typemap(freearg) itk::simple::PathType {}
 
 
-%typemap(in, fragment="SWIG_sitk_PathType", fragment="<type_traits>") const slicer_itk::simple::PathType &(slicer_itk::simple::PathType temp_path) {
+%typemap(in, fragment="SWIG_sitk_PathType", fragment="<type_traits>") const itk::simple::PathType &(itk::simple::PathType temp_path) {
   if (PyUnicode_Check($input)) {
     PyObject *bytes = NULL;
     const char *s = SWIG_PyUnicode_AsUTF8AndSize($input, NULL, &bytes);
-    temp_path = slicer_itk::simple::PathType(s);
+    temp_path = itk::simple::PathType(s);
     $1 = &temp_path;
     Py_XDECREF(bytes);
   } else if (SWIG_sitk_PathType_isPathInstance($input)) {
     PyObject *str_obj = PyObject_Str($input);
     PyObject *bytes = NULL;
     const char *s = SWIG_PyUnicode_AsUTF8AndSize(str_obj, NULL, &bytes);
-    temp_path = slicer_itk::simple::PathType(s);
+    temp_path = itk::simple::PathType(s);
     $1 = &temp_path;
     Py_XDECREF(bytes);
     Py_DECREF(str_obj);
@@ -117,21 +117,21 @@ struct SWIG_sitk_PathType_IteratorProtocol {
   }
 }
 
-%typemap(freearg) const slicer_itk::simple::PathType &{}
+%typemap(freearg) const itk::simple::PathType &{}
 
 
 // Fallback to the std::string "out" typemap
 //
-//%typemap(out, fragment="SWIG_sitk_PathType", fragment="<type_traits>") slicer_itk::simple::PathType {
+//%typemap(out, fragment="SWIG_sitk_PathType", fragment="<type_traits>") itk::simple::PathType {
 //  $result = SWIG_From_std_string($1);
 //}
 
-//%typemap(out, fragment="SWIG_sitk_PathType", fragment="<type_traits>") const slicer_itk::simple::PathType & {
+//%typemap(out, fragment="SWIG_sitk_PathType", fragment="<type_traits>") const itk::simple::PathType & {
 //  $result = SWIG_From_std_string(*$1);
 //}
 
 
-%typemap(in, fragement="SWIG_sitk_PathType", fragment="<type_traits>") const std::vector<slicer_itk::simple::PathType> &(std::vector<slicer_itk::simple::PathType> temp_path, int res) {
+%typemap(in, fragement="SWIG_sitk_PathType", fragment="<type_traits>") const std::vector<itk::simple::PathType> &(std::vector<itk::simple::PathType> temp_path, int res) {
  if (SWIG_sitk_PathType_IteratorProtocol::check($input))
  {
   SWIG_sitk_PathType_IteratorProtocol::assign($input, &temp_path);
