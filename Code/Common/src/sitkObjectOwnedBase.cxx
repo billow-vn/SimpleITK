@@ -20,9 +20,7 @@
 #include "sitkExceptionObject.h"
 #include "itkObject.h"
 
-namespace itk
-{
-namespace simple
+namespace itk::simple
 {
 
 
@@ -108,7 +106,8 @@ ObjectOwnedBase::OwnedByObjectsOff()
 }
 
 
-void ObjectOwnedBase::ExecuteCallbacks()
+void
+ObjectOwnedBase::ExecuteCallbacks()
 {
   // move to local variable to prevent any call backs modifying the multimap of objects
   decltype(m_ReferencedObjectsCallbacks) referencedObjects;
@@ -125,5 +124,4 @@ void ObjectOwnedBase::ExecuteCallbacks()
   }
 }
 
-} // namespace simple
-} // namespace itk
+} // namespace itk::simple

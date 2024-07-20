@@ -19,11 +19,11 @@ if(NOT SWIG_DIR)
   endif()
 
 
-  set(SWIG_TARGET_VERSION "4.1.1" )
+  set(SWIG_TARGET_VERSION "4.2.1" )
 
   if( USE_SWIG_FROM_GIT )
     set(SWIG_GIT_REPOSITORY "${git_protocol}://github.com/swig/swig.git" CACHE STRING "URL of swig git repo")
-    set(SWIG_GIT_TAG "rel-${SWIG_TARGET_VERSION}" CACHE STRING "Tag in swig git repo")
+    set(SWIG_GIT_TAG "v${SWIG_TARGET_VERSION}" CACHE STRING "Tag in swig git repo")
     mark_as_advanced(SWIG_GIT_REPO)
     mark_as_advanced(SWIG_GIT_TAG)
   endif()

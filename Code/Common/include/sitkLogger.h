@@ -53,9 +53,9 @@ public:
   ~LoggerBase() override;
 
   virtual void
-    DisplayText(const char * t)
- #ifndef SWIGR
-  = 0
+  DisplayText(const char * t)
+#ifndef SWIGR
+    = 0
 #endif
     ;
 

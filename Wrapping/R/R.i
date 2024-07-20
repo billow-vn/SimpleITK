@@ -5,9 +5,7 @@
 %ignore itk::simple::CastImageFilter::SetOutputPixelType( PixelIDValueType pixelID );
 %ignore itk::simple::GetPixelIDValueAsString( PixelIDValueType type );
 
-#define SITK_RETURN_SELF_TYPE_HEADER void
 
-%include <std_vector.i>
 // we don't want a class assigned to unsigned char
 %typemap(scoerceout) unsigned char,
    unsigned char *,
@@ -62,18 +60,6 @@
 
 // Gets rid of the class check for unsigned char function arguments
 %typemap("rtype") unsigned char, unsigned char *, unsigned char & "integer";
-// and for unsigned int vectors, and various pixel types that can be automatically
-// converted to R vectors. Otherwise the conversion happens in the C code and
-// the wrong class gets assigned on output
-%typemap("rtype") std::vector<unsigned int>, std::vector<unsigned int> *, std::vector<unsigned int> & "integer";
-%typemap("rtype") std::vector<int32_t>, std::vector<int32_t> *, std::vector<int32_t> & "integer";
-%typemap("rtype") std::vector<uint32_t>, std::vector<uint32_t> *, std::vector<uint32_t> & "integer";
-%typemap("rtype") std::vector<double>, std::vector<double> *, std::vector<double> & "numeric";
-
-// stop classes being asigned as these are already converted to R vectors.
-%typemap(scoerceout) std::vector<int32_t>, std::vector<int32_t> *, std::vector<int32_t> &,
-std::vector<float>, std::vector<float> *, std::vector<float> &
-%{    %}
 
 %apply std::vector< std::basic_string<char> > { std::vector< std::string> & };
 
@@ -210,10 +196,11 @@ itk::simple::Image ArrayAsIm(SEXP arr,
 // Finer control will require putting swig code in the right
 // scope.
 
-%typemap("rtype") SEXP "function";
 %{
 #include "sitkRCommand.h"
 %}
+
+%ignore itk::simple::ProcessObject::AddCommand(itk::simple::EventEnum event, itk::simple::Command &cmd);
 
 %extend itk::simple::ProcessObject {
   int AddCommand( itk::simple::EventEnum e, SEXP obj )
@@ -240,8 +227,6 @@ itk::simple::Image ArrayAsIm(SEXP arr,
      }
  }
 };
-
-//#define %rcode %insert("sinit")
 
 %Rruntime %{
 

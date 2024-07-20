@@ -26,6 +26,7 @@
 %}
 
 %include "PythonDocstrings.i"
+%include "sitkPathType.i"
  //%feature("autodoc", "1");
 
 // ignore overload methods of int type when there is an enum
@@ -97,6 +98,16 @@
 };
 
 %pythonappend slicer_itk::simple::LandmarkBasedTransformInitializer
+{
+  val = val.Downcast()
+};
+
+%pythonappend slicer_itk::simple::CenteredTransformInitializerFilter::Execute
+{
+  val = val.Downcast()
+};
+
+%pythonappend slicer_itk::simple::CenteredTransformInitializer
 {
   val = val.Downcast()
 };

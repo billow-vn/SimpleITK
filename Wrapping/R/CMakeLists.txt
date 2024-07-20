@@ -20,6 +20,11 @@ target_link_libraries ( ${SWIG_MODULE_SimpleITK_TARGET_NAME} ${SimpleITK_LIBRARI
 
 sitk_target_link_libraries_with_dynamic_lookup ( ${SWIG_MODULE_SimpleITK_TARGET_NAME} ${R_LIBRARIES} )
 
+# Workaround for SWIG 4.2.x issue with R and 64-bit integers. See GH issue swig/swig#2847 for details.
+if(SWIG_VERSION VERSION_GREATER_EQUAL "4.2.0" AND SWIG_VERSION VERSION_LESS "4.3.0" AND SITK_ULONG_SAME_AS_UINT64)
+  target_compile_definitions( ${SWIG_MODULE_SimpleITK_TARGET_NAME} PRIVATE SWIGWORDSIZE64 )
+endif()
+
 target_include_directories( ${SWIG_MODULE_SimpleITK_TARGET_NAME}
   PRIVATE
     ${R_INCLUDE_DIR} )
